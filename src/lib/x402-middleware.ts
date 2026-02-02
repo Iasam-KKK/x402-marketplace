@@ -32,7 +32,18 @@ export async function handleX402Payment({
         request.headers.get("PAYMENT-SIGNATURE") ||
         request.headers.get("X-PAYMENT");
 
-    const resourceUrl = request.url;
+    // Construct the resource URL correctly, respecting proxies (Railway)
+    const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+    const proto = request.headers.get("x-forwarded-proto") || "https";
+    // request.url in Next.js middleware/api is usually the full URL but might be internal
+    // We rebuild it to be sure it matches the public URL
+    const pathname = new URL(request.url).pathname;
+    const search = new URL(request.url).search;
+    const resourceUrl = `${proto}://${host}${pathname}${search}`;
+
+    // Debug log
+    console.log(`Processing x402 for resource: ${resourceUrl}`);
+
     const method = request.method.toUpperCase() as "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD";
 
     try {
