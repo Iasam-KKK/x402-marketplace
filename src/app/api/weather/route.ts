@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
         price: "0.001",
         description: "Get real-time weather data for any city worldwide",
         discoveryMetadata: {
+            category: "weather",
+            tags: ["weather", "forecast", "real-time", "temperature"],
             input: { city: "London" },
             inputSchema: {
                 properties: {

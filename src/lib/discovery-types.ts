@@ -33,6 +33,10 @@ export interface DiscoveryOutput {
 export interface DiscoveryMetadata {
     /** HTTP method for this endpoint */
     method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD";
+    /** Category of the API (e.g. "weather", "finance") */
+    category?: string;
+    /** Search tags for discovery */
+    tags?: string[];
     /** Example input with schema */
     input?: Record<string, unknown>;
     /** JSON Schema for input validation */
@@ -109,7 +113,20 @@ export function createBazaarExtension(metadata: DiscoveryMetadata): Record<strin
         required: ["input"],
     };
 
+    // Construct the extension object
+    // Per user request, category and tags sit at the top level of the bazaar extension
+    // along with 'info' and 'schema' (or inside info? Documentation splits vary, but user example puts them at top)
+    // The user example: { bazaar: { discoverable: true, category: "...", tags: [...] } }
+    // Our existing implementation puts logic in 'info' and 'schema'.
+    // We will merge the user's top-level fields with our 'info'/'schema' structure.
+
     return {
-        bazaar: { info, schema },
+        bazaar: {
+            discoverable: true,
+            ...(metadata.category ? { category: metadata.category } : {}),
+            ...(metadata.tags ? { tags: metadata.tags } : {}),
+            info,
+            schema
+        },
     };
 }

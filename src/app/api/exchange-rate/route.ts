@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
         price: "0.001",
         description: "Get real-time currency exchange rates",
         discoveryMetadata: {
+            category: "finance",
+            tags: ["finance", "exchange-rate", "currency", "forex"],
             input: { from: "USD", to: "EUR", amount: "100" },
             inputSchema: {
                 properties: {

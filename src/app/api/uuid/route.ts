@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
         price: "0.0001",
         description: "Generate cryptographically secure UUIDs",
         discoveryMetadata: {
+            category: "cloud-services",
+            tags: ["utility", "uuid", "generator", "tools"],
             input: { count: "1" },
             inputSchema: {
                 properties: {

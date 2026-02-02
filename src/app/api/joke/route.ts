@@ -27,6 +27,8 @@ export async function GET(request: NextRequest) {
         price: "0.0005",
         description: "Get a random joke",
         discoveryMetadata: {
+            category: "entertainment",
+            tags: ["joke", "fun", "entertainment", "random"],
             // No input required for this API
             output: {
                 example: {
